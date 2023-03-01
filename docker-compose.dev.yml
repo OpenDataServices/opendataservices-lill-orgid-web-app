@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+
+  lillorgid-web-app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    environment:
+      FLASK_DEBUG: "1"
+      AZURE_POSTGRES_CONNECTION_STRING: ${AZURE_POSTGRES_CONNECTION_STRING}
+    volumes:
+      - ".:/app"

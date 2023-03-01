@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+    <body>
+
+        <table>
+            <tr>
+                <th>List</th>
+                <th>Count</th>
+            </tr>
+            {% for list in lists %}
+                <tr>
+                    <td>{{ list['list'] }}</td>
+                    <td>{{ list['count'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        {% block content %}{% endblock %}
+    </body>
+</html>
