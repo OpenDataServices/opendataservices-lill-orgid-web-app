@@ -44,6 +44,32 @@ def list_index(id):
         list=list
     )
 
+
+@app.route('/list/<id>/data-standard')
+def list_data_standard(id):
+    with Database() as db:
+        res = db.cursor.execute(
+            "select * from list where id=%s",
+            [id]
+        )
+        list = res.fetchone()
+
+        if not list:
+            abort(404)
+
+        res = db.cursor.execute(
+            "select data_standard, count(*) from data where list=%s group by data_standard",
+            [id]
+        )
+        data_standards = [{"data_standard": r['data_standard'], "count": r['count']} for r in res.fetchall()]
+
+
+    return render_template(
+        'list/data-standards.html',
+        list=list,
+        data_standards=data_standards
+    )
+
 @app.route("/data-standard/iati")
 def data_standard_iati():
     return __data_standard('iati')

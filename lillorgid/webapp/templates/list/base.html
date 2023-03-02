@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ list['field_title_en'] }}{% endblock %}
+
+{% block pagetitle %}{{ list['field_title_en'] }}{% endblock %}
+
+{% block content %}
+
+
+<ul>
+    <li><a href="/list/{{ list['id'] }}">View</a></li>
+    <li><a href="/list/{{ list['id'] }}/data-standard">Used in Data Standards</a></li>
+</ul>
+
+{% block extracontent %}
+
+
+{% endblock %}
+{% endblock %}
+
+

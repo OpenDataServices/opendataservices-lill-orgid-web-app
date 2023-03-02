@@ -1,0 +1,19 @@
+{% extends "list/base.html" %}
+
+{% block extracontent %}
+
+    <table>
+        <tr>
+            <th>List</th>
+            <th>Count</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for data_standard in data_standards %}
+            <tr>
+                <td>{{ data_standard['data_standard'] }}</td>
+                <td>{{ data_standard['count'] }}</td>
+                <td><a href="/data-standard/{{ data_standard['data_standard']}}">View</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
