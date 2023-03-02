@@ -1,0 +1,28 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: arial, sans-serif;
+}
+
+.header-warning {
+    background: red;
+    color: white;
+    font-size: 200%;
+    padding: 10px;
+}
+
+header {
+    padding: 10px;
+    background: #ddd;
+}
+
+.content {
+    padding: 10px;
+}
+
+footer {
+    margin-top: 50px;
+    color: #555;
+    padding: 10px;
+    font-size: 80%;
+}

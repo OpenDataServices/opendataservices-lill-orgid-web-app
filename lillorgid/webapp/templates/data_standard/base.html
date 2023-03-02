@@ -1,22 +1,19 @@
-<html>
-    <head>
-        <title>{% block title %}{% endblock %}</title>
-    </head>
-    <body>
+{% extends "base.html" %}
 
-        <table>
+
+{% block content %}
+
+    <table>
+        <tr>
+            <th>List</th>
+            <th>Count</th>
+        </tr>
+        {% for list in lists %}
             <tr>
-                <th>List</th>
-                <th>Count</th>
+                <td>{{ list['list'] }}</td>
+                <td>{{ list['count'] }}</td>
             </tr>
-            {% for list in lists %}
-                <tr>
-                    <td>{{ list['list'] }}</td>
-                    <td>{{ list['count'] }}</td>
-                </tr>
-            {% endfor %}
-        </table>
+        {% endfor %}
+    </table>
 
-        {% block content %}{% endblock %}
-    </body>
-</html>
+{% endblock %}

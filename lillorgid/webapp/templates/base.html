@@ -1,8 +1,21 @@
 <html>
     <head>
         <title>{% block title %}{% endblock %}</title>
+        <link href="/static/main.css" rel="stylesheet">
     </head>
     <body>
-        {% block content %}{% endblock %}
+        <div class="header-warning">
+            This is an experimental app with incomplete data! Do not rely on it.
+        </div>
+        <header>
+            <a href="/"><h1>Lill Orgid (Temporary Name)</h1></a>
+            <h2>{% block pagetitle %}{% endblock %}</h2>
+        </header>
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+        <footer>
+            From <a href="https://opendataservices.coop/">Open Data Services</a>
+        </footer>
     </body>
 </html>
