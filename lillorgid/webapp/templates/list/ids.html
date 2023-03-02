@@ -1,0 +1,19 @@
+{% extends "list/base.html" %}
+
+{% block extracontent %}
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Count</th>
+            <th>&nbsp;</th>
+        </tr>
+        {% for id in ids %}
+            <tr>
+                <td>{{ id['id'] }}</td>
+                <td>{{ id['count'] }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -70,6 +70,31 @@ def list_data_standard(id):
         data_standards=data_standards
     )
 
+@app.route('/list/<id>/id')
+def list_id(id):
+    with Database() as db:
+        res = db.cursor.execute(
+            "select * from list where id=%s",
+            [id]
+        )
+        list = res.fetchone()
+
+        if not list:
+            abort(404)
+
+        res = db.cursor.execute(
+            "select id, count(*) from data where list=%s group by id order by id asc",
+            [id]
+        )
+        ids = [{"id": r['id'], "count": r['count']} for r in res.fetchall()]
+
+
+    return render_template(
+        'list/ids.html',
+        list=list,
+        ids=ids
+    )
+
 @app.route("/data-standard/iati")
 def data_standard_iati():
     return __data_standard('iati')
