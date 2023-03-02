@@ -7,11 +7,13 @@
         <tr>
             <th>List</th>
             <th>Count</th>
+            <th></th>
         </tr>
         {% for list in lists %}
             <tr>
                 <td>{{ list['list'] }}</td>
                 <td>{{ list['count'] }}</td>
+                <td><a href="/list/{{ list['list'] }}">View</a></td>
             </tr>
         {% endfor %}
     </table>
