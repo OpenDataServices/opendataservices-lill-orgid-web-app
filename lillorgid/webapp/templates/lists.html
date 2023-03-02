@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Lists{% endblock %}
+
+{% block pagetitle %}Lists{% endblock %}
+
+{% block content %}
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+        </tr>
+        {% for list in lists %}
+            <tr>
+                <td>{{ list['id'] }}</td>
+                <td>{{ list['field_title_en'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+
