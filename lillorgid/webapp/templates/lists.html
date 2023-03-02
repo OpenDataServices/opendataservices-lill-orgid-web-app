@@ -10,11 +10,13 @@
         <tr>
             <th>Id</th>
             <th>Title</th>
+            <th>&nbsp;</th>
         </tr>
         {% for list in lists %}
             <tr>
                 <td>{{ list['id'] }}</td>
                 <td>{{ list['field_title_en'] }}</td>
+                <td><a href="/list/{{ list['id'] }}">View</a></td>
             </tr>
         {% endfor %}
     </table>

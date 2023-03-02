@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, abort
 import psycopg
 import lillorgid.webapp.settings
 
@@ -27,6 +27,27 @@ def list():
     return render_template(
         'lists.html',
         lists=lists
+    )
+
+@app.route('/list/<id>')
+def list_index(id):
+    connection = psycopg.connect(lillorgid.webapp.settings.AZURE_POSTGRES_CONNECTION_STRING,
+                                 row_factory=psycopg.rows.dict_row)
+    with connection.cursor()    as cur:
+        res = cur.execute(
+            "select * from list where id=%s",
+            [id]
+        )
+        list = res.fetchone()
+
+    connection.close()
+
+    if not list:
+        abort(404)
+
+    return render_template(
+        'list/index.html',
+        list=list
     )
 
 @app.route("/data-standard/iati")
