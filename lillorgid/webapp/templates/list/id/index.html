@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ list['field_title_en'] }} ID {{ ids[0]['id'] }}{% endblock %}
+
+{% block pagetitle %}{{ list['field_title_en'] }} ID {{ ids[0]['id'] }}{% endblock %}
+
+{% block content %}
+
+
+    <table>
+        <tr>
+            <th>data_standard</th>
+            <th>scraper</th>
+            <th>source_id</th>
+            <th>url</th>
+            <th>meta</th>
+        </tr>
+        {% for id in ids %}
+            <tr>
+                <td>{{ id['data_standard'] }}</td>
+                <td>{{ id['scraper'] }}</td>
+                <td>{{ id['source_id'] }}</td>
+                <td>{{ id['url'] }}</td>
+                <td>{{ id['meta'] }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

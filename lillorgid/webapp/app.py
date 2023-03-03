@@ -46,7 +46,7 @@ def list_index(id):
 
 
 @app.route('/list/<id>/data-standard')
-def list_data_standard(id):
+def list_data_standards(id):
     with Database() as db:
         res = db.cursor.execute(
             "select * from list where id=%s",
@@ -71,7 +71,7 @@ def list_data_standard(id):
     )
 
 @app.route('/list/<id>/id')
-def list_id(id):
+def list_ids(id):
     with Database() as db:
         res = db.cursor.execute(
             "select * from list where id=%s",
@@ -91,6 +91,35 @@ def list_id(id):
 
     return render_template(
         'list/ids.html',
+        list=list,
+        ids=ids
+    )
+
+@app.route('/list/<listid>/id/<orgid>')
+def list_id(listid, orgid):
+    print(orgid)
+    with Database() as db:
+        res = db.cursor.execute(
+            "select * from list where id=%s",
+            [listid]
+        )
+        list = res.fetchone()
+
+        if not list:
+            abort(404)
+
+        res = db.cursor.execute(
+            "select * from data where list=%s and id=%s",
+            [listid, orgid]
+        )
+        ids = [r for r in res.fetchall()]
+
+        if not ids:
+            abort(404)
+
+
+    return render_template(
+        'list/id/index.html',
         list=list,
         ids=ids
     )
