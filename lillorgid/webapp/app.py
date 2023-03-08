@@ -134,6 +134,11 @@ def data_standard_ocds():
     return __data_standard('ocds')
 
 
+@app.route("/data-standard/indigo")
+def data_standard_indigo():
+    return __data_standard('indigo')
+
+
 
 def __data_standard(data_standard):
     with Database() as db:
