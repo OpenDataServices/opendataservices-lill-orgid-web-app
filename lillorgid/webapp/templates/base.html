@@ -15,6 +15,9 @@
             <a href="/"><h1>Lill Orgid (Temporary Name)</h1></a>
             <h2>{% block pagetitle %}{% endblock %}</h2>
         </header>
+        <div class="breadcrumbs">
+            {% block breadcrumbs %}{% endblock %}
+        </div>
         <div class="content">
             {% block content %}{% endblock %}
         </div>

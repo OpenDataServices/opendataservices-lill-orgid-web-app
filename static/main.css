@@ -16,6 +16,11 @@ header {
     background: #ddd;
 }
 
+.breadcrumbs {
+    padding: 10px;
+    border-bottom: 1px solid #555;
+}
+
 .content {
     padding: 10px;
 }

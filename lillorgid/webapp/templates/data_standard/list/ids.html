@@ -1,5 +1,17 @@
 {% extends "data_standard/list/base.html" %}
 
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/data-standard/{{ data_standard }}">{{ data_standard }}</a></li>
+            <li class="breadcrumb-item"><a href="/data-standard/{{ data_standard }}/list/{{ list['id'] }}">{{ list['id'] }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Ids</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
 {% block extracontent %}
 
     <table class="table">

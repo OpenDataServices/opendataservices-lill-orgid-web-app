@@ -1,5 +1,16 @@
 {% extends "list/base.html" %}
 
+
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ list['id'] }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+
 {% block extracontent %}
 
 <p>{{ list['field_description_en'] }}</p>

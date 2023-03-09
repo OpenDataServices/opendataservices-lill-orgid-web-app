@@ -4,6 +4,14 @@
 
 {% block pagetitle %}Welcome{% endblock %}
 
+{% block breadcrumbs %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Home</li>
+        </ol>
+    </nav>
+{% endblock %}
+
 {% block content %}
     <ul>
         <li><a href="/list" class="btn btn-primary">Browse Lists</a></li>
