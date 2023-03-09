@@ -12,7 +12,7 @@
             <tr>
                 <td>{{ data_standard['data_standard'] }}</td>
                 <td>{{ data_standard['count'] }}</td>
-                <td><a href="/data-standard/{{ data_standard['data_standard']}}" class="btn btn-primary">View</a></td>
+                <td><a href="/data-standard/{{ data_standard['data_standard']}}/list/{{ list['id'] }}" class="btn btn-primary">View</a></td>
             </tr>
         {% endfor %}
     </table>
