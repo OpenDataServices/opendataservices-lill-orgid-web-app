@@ -2,7 +2,7 @@
 
 {% block extracontent %}
 
-    <table>
+    <table class="table">
         <tr>
             <th>ID</th>
             <th>Count</th>
@@ -12,7 +12,7 @@
             <tr>
                 <td>{{ id['id'] }}</td>
                 <td>{{ id['count'] }}</td>
-                <td><a href="/list/{{ list['id'] }}/id/{{ id['id'] }}">View</a></td>
+                <td><a href="/list/{{ list['id'] }}/id/{{ id['id'] }}" class="btn btn-primary">View</a></td>
             </tr>
         {% endfor %}
     </table>

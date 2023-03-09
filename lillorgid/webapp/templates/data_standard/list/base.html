@@ -7,9 +7,9 @@
 {% block content %}
 
 
-<ul>
-    <li><a href="/data-standard/{{ data_standard }}/list/{{ list['id'] }}">View</a></li>
-    <li><a href="/data-standard/{{ data_standard }}/list/{{ list['id'] }}/id">Ids</a></li>
+<ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link" href="/data-standard/{{ data_standard }}/list/{{ list['id'] }}">View</a></li>
+    <li class="nav-item"><a class="nav-link"  href="/data-standard/{{ data_standard }}/list/{{ list['id'] }}/id">Ids</a></li>
 </ul>
 
 {% block extracontent %}

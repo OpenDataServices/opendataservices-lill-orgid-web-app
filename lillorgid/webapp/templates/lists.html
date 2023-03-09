@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <table>
+    <table class="table">
         <tr>
             <th>Id</th>
             <th>Title</th>
@@ -16,7 +16,7 @@
             <tr>
                 <td>{{ list['id'] }}</td>
                 <td>{{ list['field_title_en'] }}</td>
-                <td><a href="/list/{{ list['id'] }}">View</a></td>
+                <td><a href="/list/{{ list['id'] }}" class="btn btn-primary">View</a></td>
             </tr>
         {% endfor %}
     </table>
