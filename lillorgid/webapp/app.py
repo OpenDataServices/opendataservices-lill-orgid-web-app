@@ -124,23 +124,9 @@ def list_id(listid, orgid):
         ids=ids
     )
 
-@app.route("/data-standard/iati")
-def data_standard_iati():
-    return __data_standard('iati')
 
-
-@app.route("/data-standard/ocds")
-def data_standard_ocds():
-    return __data_standard('ocds')
-
-
-@app.route("/data-standard/indigo")
-def data_standard_indigo():
-    return __data_standard('indigo')
-
-
-
-def __data_standard(data_standard):
+@app.route("/data-standard/<data_standard>")
+def data_standard(data_standard):
     with Database() as db:
         res = db.cursor.execute(
             "select list, count(*) from data where data_standard=%s group by list",
