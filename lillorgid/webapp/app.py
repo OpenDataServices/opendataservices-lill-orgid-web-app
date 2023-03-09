@@ -97,7 +97,6 @@ def list_ids(id):
 
 @app.route('/list/<listid>/id/<orgid>')
 def list_id(listid, orgid):
-    print(orgid)
     with Database() as db:
         res = db.cursor.execute(
             "select * from list where id=%s",
