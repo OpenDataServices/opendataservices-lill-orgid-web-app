@@ -136,6 +136,52 @@ def data_standard(data_standard):
 
     return render_template(
         'data_standard/'+data_standard+'.html',
+        data_standard=data_standard,
         lists=lists
+    )
+
+
+@app.route("/data-standard/<data_standard>/list/<list_id>")
+def data_standard_list(data_standard, list_id):
+    with Database() as db:
+        res = db.cursor.execute(
+            "select * from list where id=%s",
+            [list_id]
+        )
+        list = res.fetchone()
+
+        if not list:
+            abort(404)
+
+    return render_template(
+        'data_standard/list/index.html',
+        data_standard=data_standard,
+        list=list
+    )
+
+
+@app.route("/data-standard/<data_standard>/list/<list_id>/id")
+def data_standard_list_id(data_standard, list_id):
+    with Database() as db:
+        res = db.cursor.execute(
+            "select * from list where id=%s",
+            [list_id]
+        )
+        list = res.fetchone()
+
+        if not list:
+            abort(404)
+
+        res = db.cursor.execute(
+            "select id, count(*) from data where list=%s and data_standard=%s group by id order by id asc",
+            [list_id, data_standard]
+        )
+        ids = [{"id": r['id'], "count": r['count']} for r in res.fetchall()]
+
+    return render_template(
+        'data_standard/list/ids.html',
+        data_standard=data_standard,
+        list=list,
+        ids=ids
     )
 
