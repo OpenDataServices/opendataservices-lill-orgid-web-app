@@ -1,19 +1,20 @@
-import psycopg
-import lillorgid.webapp.settings
+import lillorgid.webapp.settings as settings
+import requests
+import json
 
 class Database():
 
     def __init__(self):
-        self.connection = None
-        self.cursor = None
+        pass
 
-    def __enter__(self):
-        self.connection = psycopg.connect(lillorgid.webapp.settings.AZURE_POSTGRES_CONNECTION_STRING,
-                                 row_factory=psycopg.rows.dict_row)
-        self.cursor = self.connection.cursor()
+    def query_lists(self, query):
+        url = settings.SOLR_URL + "/" + settings.SOLR_LISTS_CORE + "/select"
+        r = requests.get(url, data=query)
+        r.raise_for_status()
+        return r.json()
 
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.cursor.close()
-        self.connection.close()
+    def query_data(self, query):
+        url = settings.SOLR_URL + "/" + settings.SOLR_DATA_CORE + "/select"
+        r = requests.get(url, data=query)
+        r.raise_for_status()
+        return r.json()

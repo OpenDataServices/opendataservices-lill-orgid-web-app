@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}{{ list['field_title_en'] }} ID {{ ids[0]['id'] }}{% endblock %}
+{% block title %}{{ list['title_en_s'] }} ID {{ ids[0]['id_s'] }}{% endblock %}
 
-{% block pagetitle %}{{ list['field_title_en'] }} ID {{ ids[0]['id'] }}{% endblock %}
+{% block pagetitle %}{{ list['title_en_s'] }} ID {{ ids[0]['id_s'] }}{% endblock %}
 
 {% block content %}
 
@@ -10,18 +10,18 @@
     <table class="table">
         <tr>
             <th>data_standard</th>
+            <th>name</th>
             <th>scraper</th>
-            <th>source_id</th>
             <th>url</th>
-            <th>meta</th>
+            <th>DEBUG</th>
         </tr>
         {% for id in ids %}
             <tr>
-                <td>{{ id['data_standard'] }}</td>
-                <td>{{ id['scraper'] }}</td>
-                <td>{{ id['source_id'] }}</td>
-                <td>{{ id['url'] }}</td>
-                <td>{{ id['meta'] }}</td>
+                <td>{{ id['datastandard_s'] }}</td>
+                <td>{{ id['name_s'] }}</td>
+                <td>{{ id['scraper_s'] }}</td>
+                <td>{{ id['url_s'] }}</td>
+                <td>{{ id }}</td>
             </tr>
         {% endfor %}
     </table>

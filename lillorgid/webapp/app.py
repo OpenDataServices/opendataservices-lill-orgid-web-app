@@ -1,6 +1,4 @@
 from flask import Flask, render_template, abort
-import psycopg
-import lillorgid.webapp.settings
 from lillorgid.webapp.database import Database
 
 app = Flask(__name__)
@@ -14,124 +12,91 @@ def home():
 
 @app.route("/list")
 def list():
-    with Database() as db:
-        res = db.cursor.execute(
-            "select * from list order by id",
-            []
-        )
-        lists = [r for r in res.fetchall()]
-
+    db = Database()
+    data = db.query_lists({'q':'*:*','start':0, 'rows':100000, 'sort':'id asc'})
 
     return render_template(
         'lists.html',
-        lists=lists
+        lists=data.get('response', {}).get('docs', [])
     )
 
 @app.route('/list/<id>')
 def list_index(id):
-    with Database() as db:
-        res = db.cursor.execute(
-            "select * from list where id=%s",
-            [id]
-        )
-        list = res.fetchone()
 
-        if not list:
-            abort(404)
+    db = Database()
+    # TODO escaping?  And in other places
+    data = db.query_lists({'q':'id:'+id})
 
     return render_template(
         'list/index.html',
-        list=list
+        list=data.get('response', {}).get('docs', []).pop()
     )
 
 
 @app.route('/list/<id>/data-standard')
 def list_data_standards(id):
-    with Database() as db:
-        res = db.cursor.execute(
-            "select * from list where id=%s",
-            [id]
-        )
-        list = res.fetchone()
 
-        if not list:
-            abort(404)
+    db = Database()
 
-        res = db.cursor.execute(
-            "select data_standard, count(*) from data where list=%s group by data_standard",
-            [id]
-        )
-        data_standards = [{"data_standard": r['data_standard'], "count": r['count']} for r in res.fetchall()]
+    data = db.query_lists({'q':'id:'+id})
 
+    data2 = db.query_data({'q':'list_s:'+id,'facet.field':'datastandard_s', 'facet.mincount':1, 'facet':'true', 'rows':1})
+    data2_facet_data = data2.get('facet_counts', {}).get('facet_fields',{}).get('datastandard_s',[])
+    data_standards = []
+    for i in range(0, len(data2_facet_data)-1,2):
+        data_standards.append({"data_standard": data2_facet_data[i], "count": data2_facet_data[i+1]} )
 
     return render_template(
         'list/data-standards.html',
-        list=list,
+        list=data.get('response', {}).get('docs', []).pop(),
         data_standards=data_standards
     )
 
 @app.route('/list/<id>/id')
 def list_ids(id):
-    with Database() as db:
-        res = db.cursor.execute(
-            "select * from list where id=%s",
-            [id]
-        )
-        list = res.fetchone()
 
-        if not list:
-            abort(404)
+    db = Database()
 
-        res = db.cursor.execute(
-            "select id, count(*) from data where list=%s group by id order by id asc",
-            [id]
-        )
-        ids = [{"id": r['id'], "count": r['count']} for r in res.fetchall()]
+    data = db.query_lists({'q':'id:'+id})
 
+    data2 = db.query_data({'q':'list_s:'+id,'facet.field':'id_s', 'facet.mincount':1, 'facet':'true', 'rows':1})
+    data2_facet_data = data2.get('facet_counts', {}).get('facet_fields',{}).get('id_s',[])
+    ids = []
+    for i in range(0, len(data2_facet_data)-1,2):
+        ids.append({"id": data2_facet_data[i], "count": data2_facet_data[i+1]} )
 
     return render_template(
         'list/ids.html',
-        list=list,
+        list=data.get('response', {}).get('docs', []).pop(),
         ids=ids
     )
 
 @app.route('/list/<listid>/id/<orgid>')
 def list_id(listid, orgid):
-    with Database() as db:
-        res = db.cursor.execute(
-            "select * from list where id=%s",
-            [listid]
-        )
-        list = res.fetchone()
 
-        if not list:
-            abort(404)
+    db = Database()
 
-        res = db.cursor.execute(
-            "select * from data where list=%s and id=%s",
-            [listid, orgid]
-        )
-        ids = [r for r in res.fetchall()]
+    data = db.query_lists({'q':'id:'+listid})
 
-        if not ids:
-            abort(404)
-
+    data2 = db.query_data({'q':'list_s:'+listid+ "  id_s:"+orgid,'q.op':'AND', 'rows':100000000})
 
     return render_template(
         'list/id/index.html',
-        list=list,
-        ids=ids
+        list=data.get('response', {}).get('docs', []).pop(),
+        ids=data2.get('response', {}).get('docs', []),
     )
 
 
 @app.route("/data-standard/<data_standard>")
 def data_standard(data_standard):
-    with Database() as db:
-        res = db.cursor.execute(
-            "select list, count(*) from data where data_standard=%s group by list",
-            [data_standard]
-        )
-        lists = [{"list": r['list'], "count": r['count']} for r in res.fetchall()]
+
+
+    db = Database()
+    data2 = db.query_data({'q':'datastandard_s:'+data_standard,'facet.field':'list_s', 'facet.mincount':1, 'facet':'true', 'rows':1})
+    data2_facet_data = data2.get('facet_counts', {}).get('facet_fields',{}).get('list_s',[])
+    lists = []
+    for i in range(0, len(data2_facet_data)-1,2):
+        lists.append({"list": data2_facet_data[i], "count": data2_facet_data[i+1]} )
 
     return render_template(
         'data_standard/'+data_standard+'.html',
@@ -142,45 +107,39 @@ def data_standard(data_standard):
 
 @app.route("/data-standard/<data_standard>/list/<list_id>")
 def data_standard_list(data_standard, list_id):
-    with Database() as db:
-        res = db.cursor.execute(
-            "select * from list where id=%s",
-            [list_id]
-        )
-        list = res.fetchone()
 
-        if not list:
-            abort(404)
+    db = Database()
+
+    data = db.query_lists({'q':'id:'+list_id})
+
+    # TODO        abort(404) and in other places
 
     return render_template(
         'data_standard/list/index.html',
         data_standard=data_standard,
-        list=list
+        list=data.get('response', {}).get('docs', []).pop(),
     )
 
 
 @app.route("/data-standard/<data_standard>/list/<list_id>/id")
 def data_standard_list_id(data_standard, list_id):
-    with Database() as db:
-        res = db.cursor.execute(
-            "select * from list where id=%s",
-            [list_id]
-        )
-        list = res.fetchone()
 
-        if not list:
-            abort(404)
+    db = Database()
 
-        res = db.cursor.execute(
-            "select id, count(*) from data where list=%s and data_standard=%s group by id order by id asc",
-            [list_id, data_standard]
-        )
-        ids = [{"id": r['id'], "count": r['count']} for r in res.fetchall()]
+    data = db.query_lists({'q':'id:'+list_id})
+
+    # TODO        abort(404) and in other places
+
+    data2 = db.query_data({'q':'list_s:'+list_id+ ' datastandard_s:'+data_standard,'q.op':'AND','facet.field':'id_s', 'facet.mincount':1, 'facet':'true', 'rows':1})
+    data2_facet_data = data2.get('facet_counts', {}).get('facet_fields',{}).get('id_s',[])
+    ids = []
+    for i in range(0, len(data2_facet_data)-1,2):
+        ids.append({"id": data2_facet_data[i], "count": data2_facet_data[i+1]} )
 
     return render_template(
         'data_standard/list/ids.html',
         data_standard=data_standard,
-        list=list,
+        list=data.get('response', {}).get('docs', []).pop(),
         ids=ids
     )
 
