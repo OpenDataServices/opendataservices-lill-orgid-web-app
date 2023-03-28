@@ -9,12 +9,12 @@ class Database():
 
     def query_lists(self, query):
         url = settings.SOLR_URL + "/" + settings.SOLR_LISTS_CORE + "/select"
-        r = requests.get(url, data=query)
+        r = requests.get(url, data=query, auth=requests.auth.HTTPBasicAuth(settings.SOLR_USERNAME, settings.SOLR_PASSWORD),)
         r.raise_for_status()
         return r.json()
 
     def query_data(self, query):
         url = settings.SOLR_URL + "/" + settings.SOLR_DATA_CORE + "/select"
-        r = requests.get(url, data=query)
+        r = requests.get(url, data=query, auth=requests.auth.HTTPBasicAuth(settings.SOLR_USERNAME, settings.SOLR_PASSWORD),)
         r.raise_for_status()
         return r.json()
