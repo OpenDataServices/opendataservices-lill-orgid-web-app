@@ -23,7 +23,7 @@ def api1_openapi_json():
             "version": "1.0"
         },
         "paths": {
-            API1_LIST_ID_USES_JSON_PATH: {
+            API1_LIST_ID_USES_JSON_PATH.replace("<","{").replace(">","}"): {
                 "summary": "Gets all uses of an Org-Id",
                 "description": "Gets all uses of an Org-Id across all data standards.",
                 "get": {
