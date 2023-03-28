@@ -31,7 +31,25 @@ def api1_openapi_json():
                         "200": {
                             "description": "Data on uses of an Org-Id"
                         }
-                    }
+                    },
+                    "parameters": [
+                        {
+                            "in": "path",
+                            "name": "listid",
+                            "required": True,
+                            "schema": {
+                                "type": "string"
+                            }
+                        },
+                        {
+                            "in": "path",
+                            "name": "orgid",
+                            "required": True,
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    ]
                 }
             }
         }
