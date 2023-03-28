@@ -27,7 +27,11 @@ def api1_openapi_json():
                 "summary": "Gets all uses of an Org-Id",
                 "description": "Gets all uses of an Org-Id across all data standards.",
                 "get": {
-
+                    "responses": {
+                        "200": {
+                            "description": "Data on uses of an Org-Id"
+                        }
+                    }
                 }
             }
         }
