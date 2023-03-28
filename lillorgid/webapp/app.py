@@ -1,4 +1,4 @@
-from flask import Flask, render_template, abort
+from flask import Flask, render_template, abort, jsonify
 from lillorgid.webapp.database import Database
 
 app = Flask(__name__)
@@ -8,6 +8,30 @@ def home():
     return render_template(
         'home.html'
     )
+
+
+API1_LIST_ID_USES_JSON_PATH = "/api1/list/<listid>/id/<orgid>/uses.json"
+
+
+@app.route('/api1/openapi.json')
+def api1_openapi_json():
+
+    return jsonify({
+        "openapi": "3.1.0",
+        "info": {
+            "title": "Lill Org Id API",
+            "version": "1.0"
+        },
+        "paths": {
+            API1_LIST_ID_USES_JSON_PATH: {
+                "summary": "Gets all uses of an Org-Id",
+                "description": "Gets all uses of an Org-Id across all data standards.",
+                "get": {
+
+                }
+            }
+        }
+    })
 
 
 @app.route("/list")
@@ -87,6 +111,23 @@ def list_id(listid, orgid):
     )
 
 
+@app.route(API1_LIST_ID_USES_JSON_PATH)
+def api1_list_id_uses_json(listid, orgid):
+
+    db = Database()
+
+    data2 = db.query_data({'q':'list_s:'+listid+ "  id_s:"+orgid,'q.op':'AND', 'rows':100000000})
+
+    out = []
+    for row in data2.get('response', {}).get('docs', []):
+        o = {
+            'datastandard': row['datastandard_s'],
+            'name': row['name_s']
+        }
+        out.append(o)
+
+    return jsonify({"data":out})
+
 @app.route("/data-standard/<data_standard>")
 def data_standard(data_standard):
 
@@ -142,4 +183,3 @@ def data_standard_list_id(data_standard, list_id):
         list=data.get('response', {}).get('docs', []).pop(),
         ids=ids
     )
-
