@@ -17,7 +17,7 @@ API1_LIST_ID_USES_JSON_PATH = "/api1/list/<listid>/id/<orgid>/uses.json"
 def api1_openapi_json():
 
     return jsonify({
-        "openapi": "3.1.0",
+        "openapi": "3.0.0",
         "info": {
             "title": "Lill Org Id API",
             "version": "1.0"
